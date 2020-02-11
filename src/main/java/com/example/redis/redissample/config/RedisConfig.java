@@ -1,5 +1,6 @@
 package com.example.redis.redissample.config;
 
+import com.example.redis.redissample.model.Item;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +25,8 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, Object> redisTemplate() {
-        final RedisTemplate<String, Object> template = new RedisTemplate<>();
+    public RedisTemplate<String, Item> redisTemplate() {
+        final RedisTemplate<String, Item> template = new RedisTemplate<String, Item>();
         template.setConnectionFactory(jedisConnectionFactory());
         template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
         return template;

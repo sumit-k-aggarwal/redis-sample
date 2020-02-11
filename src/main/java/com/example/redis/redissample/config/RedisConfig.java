@@ -32,7 +32,7 @@ public class RedisConfig {
                 new RedisClusterConfiguration(clusterProperties.getNodes()));
     }
 
-    @Bean
+    /*@Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         RedisProperties properties = redisProperties();
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
@@ -40,7 +40,7 @@ public class RedisConfig {
         configuration.setPort(properties.getPort());
 
         return new JedisConnectionFactory(configuration);
-    }
+    }*/
 
     @Bean
     public RedisTemplate<String, Item> redisTemplate() {

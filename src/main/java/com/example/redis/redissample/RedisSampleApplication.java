@@ -1,12 +1,7 @@
 package com.example.redis.redissample;
 
-import com.example.redis.redissample.model.Item;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootApplication
 public class RedisSampleApplication {
@@ -15,7 +10,7 @@ public class RedisSampleApplication {
 		SpringApplication.run(RedisSampleApplication.class, args);
 	}
 
-	@Bean
+	/*@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
 		JedisConnectionFactory factory = new JedisConnectionFactory();
 		return factory;
@@ -26,5 +21,5 @@ public class RedisSampleApplication {
 		RedisTemplate<String,Item> redisTemplate = new RedisTemplate<String, Item>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 		return redisTemplate;
-	}
+	}*/
 }

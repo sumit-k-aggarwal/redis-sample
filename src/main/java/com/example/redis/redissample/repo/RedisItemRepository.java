@@ -48,8 +48,8 @@ public class RedisItemRepository {
         return (Item) hashOperations.get(HASH_KEY,itemId);
     }
 
-    public List<Item> getRandomItemsFromSet (long count) {
-        return setOperations.randomMembers(SET_KEY, count);
+    public Set<Item> getRandomItemsFromSet (long count) {
+        return setOperations.distinctRandomMembers(SET_KEY, count);
     }
 
     /*Adding an item into redis database*/
@@ -62,9 +62,11 @@ public class RedisItemRepository {
     /*Adding an item into redis database*/
     public void addItems(Item item, int count){
         for (int i=0; i < count; i++) {
-            item.setId(item.getId()+i);
-            item.setName(item.getName() + i);
-            addItem(item);
+            Item tempItem = new Item();
+            tempItem.setId(item.getId()+i);
+            tempItem.setName(item.getName() + i);
+            tempItem.setCategory(item.getCategory()+i);
+            addItem(tempItem);
         }
     }
 

@@ -20,9 +20,9 @@ public class ItemController {
 
     @RequestMapping("/getRandomItemsFromSet/{count}")
     @ResponseBody
-    public ResponseEntity<List<Item>> getRandomItemsFromSet(@PathVariable int count){
-        List items =  itemRepo.getRandomItemsFromSet(count);
-        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+    public ResponseEntity<Set<Item>> getRandomItemsFromSet(@PathVariable int count){
+        Set items =  itemRepo.getRandomItemsFromSet(count);
+        return new ResponseEntity<Set<Item>>(items, HttpStatus.OK);
     }
 
     @RequestMapping("/getAllItemsFromSet")

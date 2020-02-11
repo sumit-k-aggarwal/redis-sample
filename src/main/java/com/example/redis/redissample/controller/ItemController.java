@@ -9,17 +9,40 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 public class ItemController {
     @Autowired
     RedisItemRepository itemRepo;
 
-    @RequestMapping("/getAllItems")
+    @RequestMapping("/getRandomItemsFromSet/{count}")
     @ResponseBody
-    public ResponseEntity<Map<Integer, Item>> getAllItems(){
-        Map<Integer,Item> items =  itemRepo.getAllItems();
+    public ResponseEntity<List<Item>> getRandomItemsFromSet(@PathVariable int count){
+        List items =  itemRepo.getRandomItemsFromSet(count);
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+    }
+
+    @RequestMapping("/getAllItemsFromSet")
+    @ResponseBody
+    public ResponseEntity<Set<Item>> getAllItemsFromSet(){
+        Set items =  itemRepo.getAllItemFromSets();
+        return new ResponseEntity<Set<Item>>(items, HttpStatus.OK);
+    }
+
+    @RequestMapping("/getAllItemsFromList")
+    @ResponseBody
+    public ResponseEntity<List<Item>> getAllItemsFromList(){
+        List items =  itemRepo.getAllItemFromLists();
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+    }
+
+    @RequestMapping("/getAllItemsFromHash")
+    @ResponseBody
+    public ResponseEntity<Map<Integer, Item>> getAllItemsFromHash(){
+        Map<Integer,Item> items =  itemRepo.getAllItemFromHash();
         return new ResponseEntity<Map<Integer,Item>>(items, HttpStatus.OK);
     }
 
@@ -34,6 +57,15 @@ public class ItemController {
     @ResponseBody
     public ResponseEntity<Item> addItem(@RequestBody Item item, UriComponentsBuilder builder){
         itemRepo.addItem(item);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/addItem/{id}").buildAndExpand(item.getId()).toUri());
+        return new ResponseEntity<Item>(headers, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/addItems/{count}",consumes = {"application/json"},produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<Item> addItems(@RequestBody Item item, @PathVariable int count, UriComponentsBuilder builder){
+        itemRepo.addItems(item, count);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("/addItem/{id}").buildAndExpand(item.getId()).toUri());
         return new ResponseEntity<Item>(headers, HttpStatus.CREATED);

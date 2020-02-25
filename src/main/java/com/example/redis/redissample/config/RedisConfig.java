@@ -17,11 +17,11 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 public class RedisConfig {
 
-    @Value(value = "${redis.hostname}")
+    /*@Value(value = "${redis.hostname}")
     private String redisHostname;
 
     @Value(value = "${redis.port}")
-    private int redisPort;
+    private int redisPort;*/
 
     @Autowired
     ClusterConfigurationProperties clusterProperties;

@@ -1,8 +1,11 @@
 package com.example.redis.redissample.controller;
 
+import com.example.redis.redissample.model.GeoLocation;
 import com.example.redis.redissample.model.Item;
 import com.example.redis.redissample.repo.RedisItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.GeoResults;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -85,5 +88,28 @@ public class ItemController {
     public ResponseEntity<Void> deleteItem(@PathVariable String id){
         itemRepo.deleteItem(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
+    }
+
+    @PostMapping(value = "/addGeoLocation",consumes = {"application/json"},produces = {"application/json"})
+    @ResponseBody
+    public ResponseEntity<GeoLocation> addGeoLocation(@RequestBody GeoLocation geo, UriComponentsBuilder builder){
+        itemRepo.addGeoLocation(geo);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(builder.path("/addGeoLocation/{city}").buildAndExpand(geo.getCity()).toUri());
+        return new ResponseEntity<GeoLocation>(headers, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/getGeoDistance/{source}/{target}")
+    @ResponseBody
+    public ResponseEntity<Distance> getGeoDistance(@PathVariable String source, @PathVariable String target){
+        Distance item = itemRepo.getGeoDistance(source, target);
+        return new ResponseEntity<Distance>(item, HttpStatus.OK);
+    }
+
+    @GetMapping("/getGeoRadius/{source}/{value}")
+    @ResponseBody
+    public ResponseEntity<GeoResults> getGeoRadius(@PathVariable String source, @PathVariable Double value){
+        GeoResults item = itemRepo.getGeoRadius(source, value);
+        return new ResponseEntity<GeoResults>(item, HttpStatus.OK);
     }
 }

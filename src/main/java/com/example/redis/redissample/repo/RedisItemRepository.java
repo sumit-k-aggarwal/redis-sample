@@ -18,12 +18,12 @@ public class RedisItemRepository {
     public static final String SET_KEY = "ITEM_SET";
     public static final String LIST_KEY = "ITEM_LIST";
     @Autowired
-    private RedisTemplate<String, Item> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
     private HashOperations hashOperations;
     private SetOperations setOperations;
     private ListOperations listOperations;
 
-    public RedisItemRepository(RedisTemplate<String, Item> redisTemplate) {
+    public RedisItemRepository(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
         hashOperations = redisTemplate.opsForHash();
         setOperations = redisTemplate.opsForSet();

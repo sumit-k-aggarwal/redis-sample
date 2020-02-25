@@ -41,14 +41,14 @@ public class ItemController {
 
     @RequestMapping("/getAllItemsFromHash")
     @ResponseBody
-    public ResponseEntity<Map<Integer, Item>> getAllItemsFromHash(){
-        Map<Integer,Item> items =  itemRepo.getAllItemFromHash();
-        return new ResponseEntity<Map<Integer,Item>>(items, HttpStatus.OK);
+    public ResponseEntity<Map<String, Item>> getAllItemsFromHash(){
+        Map<String,Item> items =  itemRepo.getAllItemFromHash();
+        return new ResponseEntity<Map<String,Item>>(items, HttpStatus.OK);
     }
 
     @GetMapping("/item/{itemId}")
     @ResponseBody
-    public ResponseEntity<Item> getItem(@PathVariable int itemId){
+    public ResponseEntity<Item> getItem(@PathVariable String itemId){
         Item item = itemRepo.getItem(itemId);
         return new ResponseEntity<Item>(item, HttpStatus.OK);
     }
@@ -82,7 +82,7 @@ public class ItemController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseBody
-    public ResponseEntity<Void> deleteItem(@PathVariable int id){
+    public ResponseEntity<Void> deleteItem(@PathVariable String id){
         itemRepo.deleteItem(id);
         return new ResponseEntity<Void>(HttpStatus.ACCEPTED);
     }

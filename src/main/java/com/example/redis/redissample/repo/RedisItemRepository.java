@@ -31,7 +31,7 @@ public class RedisItemRepository {
     }
 
     /*Getting all Items from tSable*/
-    public Map<Integer,Item> getAllItemFromHash(){
+    public Map<String,Item> getAllItemFromHash(){
         return hashOperations.entries(HASH_KEY);
     }
 
@@ -44,7 +44,7 @@ public class RedisItemRepository {
     }
 
     /*Getting a specific item by item id from table*/
-    public Item getItem(int itemId){
+    public Item getItem(String itemId){
         return (Item) hashOperations.get(HASH_KEY,itemId);
     }
 
@@ -71,7 +71,7 @@ public class RedisItemRepository {
     }
 
     /*delete an item from database*/
-    public void deleteItem(int id){
+    public void deleteItem(String id){
         hashOperations.delete(HASH_KEY,id);
     }
 

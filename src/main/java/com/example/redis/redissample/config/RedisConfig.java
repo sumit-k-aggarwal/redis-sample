@@ -1,26 +1,27 @@
 package com.example.redis.redissample.config;
 
-import com.example.redis.redissample.model.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
-import org.springframework.data.redis.serializer.GenericToStringSerializer;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {
+
+    @Value(value = "${redis.hostname}")
+    private String redisHostname;
+
+    @Value(value = "${redis.port}")
+    private int redisPort;
 
     @Autowired
     ClusterConfigurationProperties clusterProperties;
@@ -28,6 +29,10 @@ public class RedisConfig {
     public @Bean
     RedisConnectionFactory connectionFactory() {
 
+        /*RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisHostname);
+        redisStandaloneConfiguration.setPort(redisPort);
+        return new JedisConnectionFactory(redisStandaloneConfiguration);*/
         return new JedisConnectionFactory(
                 new RedisClusterConfiguration(clusterProperties.getNodes()));
     }
@@ -43,10 +48,14 @@ public class RedisConfig {
     }*/
 
     @Bean
-    public RedisTemplate<String, Item> redisTemplate() {
-        final RedisTemplate<String, Item> template = new RedisTemplate<String, Item>();
+    public RedisTemplate<String, Object> redisTemplate() {
+        final RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
         template.setConnectionFactory(connectionFactory());
-        // template.setValueSerializer(new GenericToStringSerializer<>(Object.class));
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new StringRedisSerializer());
+        template.afterPropertiesSet();
         return template;
     }
 
